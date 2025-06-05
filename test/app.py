@@ -1,9 +1,5 @@
 from flask import Flask, render_template
 
-app = Flask(__name__)
-
-app.config['SECRET_KEY'] = 'l4XW1ivPOb8ohZkK5AYUiZdpCcmzATDl'
-
 import shutil
 import os
 from flask import Flask
@@ -12,13 +8,16 @@ import click
 
 app = Flask(__name__)
 
-# Function to copy dist files to Flask static
+app.config['SECRET_KEY'] = 'l4XW1ivPOb8ohZkK5AYUiZdpCcmzATDl'
+
 def copy_dist_to_static():
     current_dir = os.getcwd()
     flask_app_dir = os.path.dirname(os.path.abspath(__file__))
 
-    dist_dir = os.path.join(current_dir, 'dist')  # Path to the dist directory from your Flask app
-    static_dir = os.path.join(flask_app_dir, 'static')  # Flask static directory
+    # Path to the dist directory from vite build
+    dist_dir = os.path.join(current_dir, 'dist')
+    # Flask static directory
+    static_dir = os.path.join(flask_app_dir, 'static')
 
     if not os.path.exists(dist_dir):
         print(f"Error: {dist_dir} does not exist.")
