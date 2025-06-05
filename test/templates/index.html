@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="static/toast.css">
+    <script type="application/javascript" src="static/toast.umd.js"></script>
+
+    <style>
+      html, body {
+        height: 100%;
+        margin: 0;
+      }
+      body {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        gap: 1rem;
+        padding: 2rem;
+        align-items: center;
+        height: 100%;
+      }
+    </style>
+
+    <title>JavaScript Toast Messages</title>
+
+  </head>
+
+  <body>
+
+    <script type="module">
+      /* import { toast.toaster } from "./static/toast.es.js"; */
+
+      const toaster = toast.toaster;
+      class toast_info_button extends HTMLElement {
+        constructor() {
+          super();
+          this.addEventListener('click', this.display);
+        }
+
+        display() {
+          toaster.info('This is an info message!', { position: 'top-left'});
+        }
+      }
+      customElements.define('toast-info-button', toast_info_button);
+
+      class toast_success_button extends HTMLElement {
+        constructor() {
+          super();
+          this.addEventListener('click', this.display);
+        }
+
+        display() {
+          toaster.success('This is an success message!', { position: 'top-right'});
+        }
+      }
+      customElements.define('toast-success-button', toast_success_button);
+
+      class toast_warning_button extends HTMLElement {
+        constructor() {
+          super();
+          this.addEventListener('click', this.display);
+        }
+
+        display() {
+          toaster.warning('This is an warning message!', { position: 'bottom-left'});
+        }
+      }
+      customElements.define('toast-warning-button', toast_warning_button);
+
+      class toast_error_button extends HTMLElement {
+        constructor() {
+          super();
+          this.addEventListener('click', this.display);
+        }
+
+        display() {
+          toaster.error('This is an error message!', { position: 'bottom-right'});
+        }
+      }
+      customElements.define('toast-error-button', toast_error_button);
+
+    </script>
+
+    {% block content %}{% endblock %}
+
+    <button>
+      <toast-info-button>Info</toast-info-button>
+    </button>
+    <button>
+      <toast-success-button>Success</toast-success-button>
+    </button>
+    <button>
+      <toast-warning-button>Warning</toast-warning-button>
+    </button>
+    <button>
+      <toast-error-button>Error</toast-eror-button>
+    </button>
+
+  </body>
+
+</html>

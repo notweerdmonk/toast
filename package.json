@@ -1,0 +1,27 @@
+{
+  "name": "toast",
+  "version": "0.0.1",
+  "description": "Display toasts on a webpage",
+  "main": "dist/toast.umd.js",
+  "module": "dist/toast.es.js",
+  "scripts": {
+    "build": "vite build",
+    "preview": "vite preview",
+    "clean": "rm -rf dist"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/notweerdmonk/toast.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/notweerdmonk/toast/issues"
+  },
+  "homepage": "https://github.com/notweerdmonk/toast",
+  "dependencies": {
+  },
+  "devDependencies": {
+    "@vercel/ncc": "^0.38.3"
+  }
+}
