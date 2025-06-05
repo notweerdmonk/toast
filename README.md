@@ -4,7 +4,7 @@
 
 [See toast in action](https://toast-uxkl.onrender.com)
 
-**toast** is a lightweight JavaScript library for showing toast (notification) messages on web pages. It provides simple methods to display notifications of various types (info, success, warning, error) with customizable positioning and duration. As noted in the repository, it is designed to “Display toasts on a webpage”[^1] [^2]. The project is MIT-licensed (see **License** below) and requires no external dependencies.
+**toast** is a lightweight JavaScript library for showing toast (notification) messages on web pages. It provides simple methods to display notifications of various types (info, success, warning, error) with customizable positioning and duration. As noted in the repository, it is designed to “Display toasts on a webpage”[^1]. The project is MIT-licensed (see **License** below) and requires no external dependencies.
 
 ## ✨ Key Features
 
