@@ -8,5 +8,10 @@ export default defineConfig({
       fileName: (format) => `toast.${format}.js`,
       formats: ['es', 'umd'],
     },
+    rollupOptions: {
+      output: {
+        exports: 'named',
+      },
+    },
   },
 });
