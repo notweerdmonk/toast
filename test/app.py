@@ -1,4 +1,5 @@
-from flask import Flask, render_template
+import sys
+from flask import Flask, render_template, make_response
 
 import shutil
 import os
@@ -9,6 +10,7 @@ import click
 app = Flask(__name__)
 
 app.config['SECRET_KEY'] = 'l4XW1ivPOb8ohZkK5AYUiZdpCcmzATDl'
+app.config['TESTING'] = True
 
 def copy_dist_to_static():
     current_dir = os.getcwd()

@@ -1,5 +1,24 @@
-class p {
+var y = Object.defineProperty;
+var g = (s) => {
+  throw TypeError(s);
+};
+var E = (s, o, t) => o in s ? y(s, o, { enumerable: !0, configurable: !0, writable: !0, value: t }) : s[o] = t;
+var p = (s, o, t) => E(s, typeof o != "symbol" ? o + "" : o, t), x = (s, o, t) => o.has(s) || g("Cannot " + t);
+var c = (s, o, t) => (x(s, o, "read from private field"), t ? t.call(s) : o.get(s)), u = (s, o, t) => o.has(s) ? g("Cannot add the same private member more than once") : o instanceof WeakSet ? o.add(s) : o.set(s, t), r = (s, o, t, i) => (x(s, o, "write to private field"), i ? i.call(s, t) : o.set(s, t), t);
+class _ {
   constructor() {
+    p(this, "success", ((o, t = {}) => {
+      this.show_toast(o, "success", t);
+    }).bind(this));
+    p(this, "error", ((o, t = {}) => {
+      this.show_toast(o, "error", t);
+    }).bind(this));
+    p(this, "info", ((o, t = {}) => {
+      this.show_toast(o, "info", t);
+    }).bind(this));
+    p(this, "warning", ((o, t = {}) => {
+      this.show_toast(o, "warning", t);
+    }).bind(this));
     Object.defineProperty(this, "default_options", {
       value: Object.freeze({
         duration: 1500,
@@ -9,8 +28,8 @@ class p {
       configurable: !1
     });
   }
-  validate_position(t) {
-    const o = [
+  validate_position(o) {
+    const t = [
       "top",
       "left",
       "right",
@@ -20,20 +39,20 @@ class p {
       "bottom-left",
       "bottom-right"
     ];
-    return o.includes(t) ? !0 : (console.error(
-      `Invalid position "${t}".
-        Allowed values are: ${o.join(", ")}`
-    ), !1);
+    return typeof o < "u" && o !== null ? t.includes(o) || (console.error(
+      `Invalid position "${o}".
+            Allowed values are: ${t.join(", ")}`
+    ), !1) : !1;
   }
-  show_toast(t, o, i = {}) {
-    const a = Object.assign({}, this.default_options, i);
-    if (!this.validate_position(a.position))
+  show_toast(o, t, i = {}) {
+    const e = Object.assign({}, this.default_options, i);
+    if (!this.validate_position(e.position))
       return;
-    a.duration > 3e3 && (a.duration = 3e3);
-    const e = document.createElement("div");
-    e.classList.add("toast", o, a.position), e.textContent = t;
-    const c = document.createElement("style");
-    c.textContent = `
+    e.duration > 3e3 && (e.duration = 3e3);
+    const n = document.createElement("div");
+    n.classList.add("toast", t, e.position), n.textContent = o;
+    const b = document.createElement("style");
+    b.textContent = `
       .toast {
         position: fixed;
         min-width: 200px;
@@ -126,38 +145,53 @@ class p {
         opacity: 0;
       }
       `;
-    const d = e.attachShadow({ mode: "closed" });
-    d.appendChild(c), e.appendChild(d);
-    const l = document.createElement("slot");
-    d.appendChild(l), setTimeout(() => {
-      e.classList.add("fade-out");
-    }, a.duration), e.addEventListener("transitionend", () => {
-      e.remove();
-    }), e.addEventListener("click", () => {
-      e.remove();
-    }), document.body.appendChild(e);
-  }
-  success(t, o = {}) {
-    this.show_toast(t, "success", o);
-  }
-  error(t, o = {}) {
-    this.show_toast(t, "error", o);
-  }
-  info(t, o = {}) {
-    this.show_toast(t, "info", o);
-  }
-  warning(t, o = {}) {
-    this.show_toast(t, "warning", o);
+    const m = n.attachShadow({ mode: "closed" });
+    m.appendChild(b), n.appendChild(m);
+    const w = document.createElement("slot");
+    m.appendChild(w), setTimeout(() => {
+      n.classList.add("fade-out");
+    }, e.duration), n.addEventListener("transitionend", () => {
+      n.remove();
+    }), n.addEventListener("click", () => {
+      n.remove();
+    }), document.body.appendChild(n);
   }
 }
-class n extends HTMLElement {
-  constructor(t) {
-    super(), this.addEventListener("click", this.display), this.toaster = t;
+var l, a, h;
+class f extends HTMLElement {
+  constructor(t, i, e, n) {
+    super();
+    u(this, l);
+    u(this, a);
+    u(this, h);
+    this.addEventListener("click", this.display), (typeof e > "u" || e === null) && r(this, l, "This is a toast!") || r(this, l, e), (typeof n > "u" || n === null) && r(this, a, "bottom") || r(this, a, n), (t == null || typeof t > "u") && (this.toaster = new _()) || (this.toaster = t), (i == null || typeof i > "u") && (this.toastfn = d.info) || (this.toastfn = i);
+  }
+  get message() {
+    return c(this, l);
+  }
+  set message(t) {
+    c(this, l) !== t && r(this, l, t);
+  }
+  get position() {
+    return c(this, a);
+  }
+  set position(t) {
+    c(this, a) !== t && r(this, a, t);
+  }
+  get toastfn() {
+    return c(this, h);
+  }
+  set toastfn(t) {
+    c(this, h) !== t && r(this, h, t);
+  }
+  static get getObservedAttributes() {
+    return ["message", "position"];
   }
   connectedCallback() {
-    const t = this.attachShadow({ mode: "closed" }), o = document.createElement("style");
-    o.textContent = `
-      .::slotted(button) {
+    r(this, a, this.getAttribute("position") || c(this, a));
+    const t = this.attachShadow({ mode: "closed" }), i = document.createElement("style");
+    i.textContent = `
+      .::slotted(*) {
         padding: 0;
         margin 0;
         border: none;
@@ -165,39 +199,44 @@ class n extends HTMLElement {
         width: 100%;
         height: 100%;
       }
-      `, t.appendChild(o);
-    const i = document.createElement("slot");
-    t.appendChild(i);
+      `, t.appendChild(i);
+    const e = document.createElement("slot");
+    t.appendChild(e);
   }
-  display() {
+  attributeChangedCallback(t, i, e) {
+    t === "message" && (this.message = e) || t === "position" && (this.position = e);
   }
-}
-class f extends n {
-  display() {
-    r.info("This is an info message!", { position: "top-left" });
-  }
-}
-customElements.define("toast-info", f);
-class m extends n {
-  display() {
-    r.success("This is an success message!", { position: "top-right" });
+  display(t) {
+    this.toastfn && this.toastfn(this.message, { position: this.position });
   }
 }
-customElements.define("toast-success", m);
-class h extends n {
-  display() {
-    r.warning("This is an warning message!", { position: "bottom-left" });
+l = new WeakMap(), a = new WeakMap(), h = new WeakMap();
+class v extends f {
+  constructor() {
+    super(d, d.info, "This is an info toast!");
   }
 }
-customElements.define("toast-warning", h);
-class u extends n {
-  display() {
-    r.error("This is an error message!", { position: "bottom-right" });
+customElements.define("toast-info", v);
+class C extends f {
+  constructor() {
+    super(d, d.success, "This is a success toast!");
   }
 }
-customElements.define("toast-error", u);
-const r = new p();
+customElements.define("toast-success", C);
+class k extends f {
+  constructor() {
+    super(d, d.warning, "This is a warning toast!");
+  }
+}
+customElements.define("toast-warning", k);
+class T extends f {
+  constructor() {
+    super(d, d.error, "This is an error toast!");
+  }
+}
+customElements.define("toast-error", T);
+const d = new _();
 export {
-  r as default,
-  r as toaster
+  d as default,
+  d as toaster
 };
