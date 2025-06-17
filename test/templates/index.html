@@ -11,17 +11,16 @@
 
     <style>
       html, body {
-        height: 100%;
         margin: 0;
+        height: 100%;
       }
       body {
         display: flex;
         flex-direction: row;
         justify-content: center;
-        gap: 1rem;
-        padding: 2rem;
         align-items: center;
-        height: 100%;
+        padding: 2rem;
+        gap: 1rem;
       }
     </style>
 
@@ -33,16 +32,16 @@
 
     {% block content %}{% endblock %}
 
-    <toast-info>
+    <toast-info position="top-left">
       <button>Info</button>
     </toast-info>
-    <toast-success>
+    <toast-success position="top-right">
       <button>Success</button>
     </toast-success>
-    <toast-warning>
+    <toast-warning position="bottom-left">
       <button>Warning</button>
     </toast-warning>
-    <toast-error>
+    <toast-error position="bottom-right">
       <button>Error</button>
     </toast-eror>
 

@@ -46,14 +46,18 @@ class __toaster {
       "bottom-right"
     ];
 
-    if (!allowed_positions.includes(position)) {
-      console.error(
-        `Invalid position "${position}".
-        Allowed values are: ${allowed_positions.join(', ')}`
-      );
-      return false;
-    }
-    return true;
+    return (
+      (typeof(position) !== "undefined" && position !== null) ?
+      allowed_positions.includes(position) ||
+        (
+          console.error(
+            `Invalid position "${position}".
+            Allowed values are: ${allowed_positions.join(', ')}`
+          ),
+          false
+        ) :
+      false
+    );
   }
 
   show_toast(message, category, options = {}) {
@@ -63,9 +67,7 @@ class __toaster {
       return;
     }
 
-    if (merged_options.duration > 3000) {
-      merged_options.duration = 3000;
-    }
+    (merged_options.duration > 3000) && (merged_options.duration = 3000);
 
     const toast = document.createElement("div");
     toast.classList.add('toast', category, merged_options.position);
@@ -188,36 +190,85 @@ class __toaster {
     document.body.appendChild(toast);
   }
 
-  success(message, options = {}) {
+  success = ((message, options = {}) => {
     this.show_toast(message, 'success', options);
-  }
+  }).bind(this);
 
-  error(message, options = {}) {
+  error = ((message, options = {}) => {
     this.show_toast(message, 'error', options);
-  }
+  }).bind(this);
 
-  info(message, options = {}) {
+  info = ((message, options = {}) => {
     this.show_toast(message, 'info', options);
-  }
+  }).bind(this);;
 
-  warning(message, options = {}) {
+  warning = ((message, options = {}) => {
     this.show_toast(message, 'warning', options);
-  }
+  }).bind(this);
 }
 
 class __toast extends HTMLElement {
-  constructor(toaster) {
+  #message
+  #position
+  #toastfn
+
+  get message() {
+    return this.#message;
+  }
+
+  set message(val) {
+    (this.#message !== val) && (this.#message = val);
+  }
+
+  get position() {
+    return this.#position;
+  }
+
+  set position(val) {
+    (this.#position !== val) && (this.#position = val);
+  }
+
+  get toastfn() {
+    return this.#toastfn;
+  }
+
+  set toastfn(fn) {
+    (this.#toastfn !== fn) && (this.#toastfn = fn);
+  }
+
+  constructor(toasterobj, toastfn, message, position) {
     super();
     this.addEventListener('click', this.display);
-    this.toaster = toaster;
+
+    ((typeof(message) === "undefined" || message === null) &&
+      (this.#message = "This is a toast!")) ||
+      (this.#message = message);
+
+    ((typeof(position) === "undefined" || position === null) &&
+      (this.#position = "bottom")) ||
+      (this.#position = position);
+
+    ((toasterobj == null || typeof(toasterobj) === "undefined") &&
+      (this.toaster = new __toaster())) ||
+      (this.toaster = toasterobj);
+
+    ((toastfn == null || typeof(toastfn) === "undefined") &&
+      (this.toastfn = toaster.info)) ||
+      (this.toastfn = toastfn);
+  }
+
+  static get getObservedAttributes() {
+    return ["message", "position"];
   }
 
   connectedCallback() {
+    this.#position = this.getAttribute("position") || this.#position;
+
     const shadow = this.attachShadow({ mode: "closed" });
 
     const style = document.createElement("style");
     style.textContent = `
-      .::slotted(button) {
+      .::slotted(*) {
         padding: 0;
         margin 0;
         border: none;
@@ -233,37 +284,45 @@ class __toast extends HTMLElement {
     shadow.appendChild(slot);
   }
 
-  display() {
+  attributeChangedCallback(name, oldval, newval) {
+    (
+      ((name === "message") && (this.message = newval)) ||
+      ((name === "position") && (this.position = newval))
+    );
+  }
+
+  display(event) {
+    this.toastfn && this.toastfn(this.message, { position: this.position });
   }
 }
 
 class __toast_info extends __toast {
-  display() {
-    toaster.info('This is an info message!', { position: 'top-left'});
+  constructor() {
+    super(toaster, toaster.info, "This is an info toast!");
   }
 }
 
 customElements.define('toast-info', __toast_info);
 
 class __toast_success extends __toast {
-  display() {
-    toaster.success('This is an success message!', { position: 'top-right'});
+  constructor() {
+    super(toaster, toaster.success, "This is a success toast!");
   }
 }
 
 customElements.define('toast-success', __toast_success);
 
 class __toast_warning extends __toast {
-  display() {
-    toaster.warning('This is an warning message!', { position: 'bottom-left'});
+  constructor() {
+    super(toaster, toaster.warning, "This is a warning toast!");
   }
 }
 
 customElements.define('toast-warning', __toast_warning);
 
 class __toast_error extends __toast {
-  display() {
-    toaster.error('This is an error message!', { position: 'bottom-right'});
+  constructor() {
+    super(toaster, toaster.error, "This is an error toast!");
   }
 }
 
@@ -271,3 +330,4 @@ customElements.define('toast-error', __toast_error);
 
 export const toaster = new __toaster();
 export default toaster;
+
